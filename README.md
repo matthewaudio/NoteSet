@@ -2,13 +2,18 @@
 
 This is C++ code to implement monophony given midi note information.  I don't exactly know what this algorithm is called but it's implemented in almost every synthesizer and was surprised not to see a version on the web for C++. 
 
-Use it by
 
 Note stack by Olivier Gillet >> NoteSet by kschaffer >> C++ version of NoteSet
 This is a version of Kat Schaffer's code that is not reliant on <Arduino.h>.  Should work in C++
+
+
+Quick example code
 ```
 NoteSet *nSet =new NoteSet( );
-nSet->init(NOTE_PRIORITY_LAST);
+nSet->init(NOTE_PRIORITY_LAST);  
+/*
+or NOTE_PRIORITY_LOW or NOTE_PRIORITY_HIGH
+*/
 
 NoteInfo nsetSpatOut;
 
