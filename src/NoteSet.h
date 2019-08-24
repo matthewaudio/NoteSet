@@ -50,7 +50,7 @@
 #ifndef NOTESET_H
 #define NOTESET_H
 
-#include <Arduino.h>
+#include <stdio.h>
 
 // For ease of code-reading, core parameters are set here with #define statements
 // This is the total number of keys we will be able to track at once
@@ -70,14 +70,14 @@
 // struct we will use to store notes.
 struct NoteInfo {
     // the NoteInfo struct stores MIDI values for the note
-    byte note;
-    byte velocity;
+    short note;
+    short velocity;
     
     //... and it stores an index that says which note is next in the sequence
     //the index has values ranging from 1 to "capacity."
     //this is how we implement the "linked list" -
     //each element in the set knows which one comes next in order.
-    byte next_idx;
+    short next_idx;
 };
 
 
@@ -92,27 +92,27 @@ public:
     ~NoteSet() { }
     
     //initialization:  must be called before you use the NoteSet.
-    void init(byte priority);
+    void init(short priority);
 
     //Add or remove a note
-    void note_on(byte note, byte velocity);
-    void note_off(byte note);
+    void note_on(short note, short velocity);
+    void note_off(short note);
 
     //I (KS) am not entirely sure how these functions work (yet)
     //but I am retaining them because I think ultimately this is
     //useable for designing arpeggiation etc.
     NoteInfo& most_recent_note();
     NoteInfo& least_recent_note();
-    NoteInfo& played_note(byte index);
-    NoteInfo& sorted_note(byte index);
-    NoteInfo& note(byte index);
+    NoteInfo& played_note(short index);
+    NoteInfo& sorted_note(short index);
+    NoteInfo& note(short index);
     
     //this just returns an empty note
     NoteInfo& no_note();
     
     //This is the main algorithm that decides which note is the
     //right one to play.
-    NoteInfo& note_by_priority(byte priority);
+    NoteInfo& note_by_priority(short priority);
  
     //This is a KS addition that wraps note_by_priority and adds
     //an additional check so that we do not retrigger a note that
@@ -121,24 +121,24 @@ public:
     
 
     //some convenience functions for getting info:
-    byte get_last(){return last_played;};
-    byte get_size() { return size; }
-    byte max_size() { return capacity; }
+    short get_last(){return last_played;};
+    short get_size() { return size; }
+    short max_size() { return capacity; }
 
     
 private:
 
     //used by the init function:
-    void set_priority(byte priority){the_priority = priority; };
+    void set_priority(short priority){the_priority = priority; };
     
     //here are all the internal parameters the code uses
-    byte capacity = SET_SIZE;  //no point in having more notes available than fingers!
-    byte size;
+    short capacity = SET_SIZE;  //no point in having more notes available than fingers!
+    short size;
     NoteInfo notes[SET_SIZE + 1];  // First element is an empty node, based on how linked lists work!
-    byte root_idx;  // values range from 1 to capacity
-    byte sorted_idx[SET_SIZE + 1];  // values range from 1 to capacity
-    byte the_priority;
-    byte last_played;
+    short root_idx;  // values range from 1 to capacity
+    short sorted_idx[SET_SIZE + 1];  // values range from 1 to capacity
+    short the_priority;
+    short last_played;
 };
 
 
